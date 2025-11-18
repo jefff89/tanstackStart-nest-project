@@ -1,0 +1,12 @@
+# Creating a new project
+nest new <name of project>
+
+# Creating a new module
+nest g module <name of module>
+
+# Creating a new controller
+nest g controller <name of controller>
+
+# Creating a new service
+nest g service <name of service>
+
