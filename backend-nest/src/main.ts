@@ -1,8 +1,14 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-
+import { ValidationPipe } from '@nestjs/common';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  await app.listen(process.env.PORT ?? 3000);
+  // for incoming request validation
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true, // Ignore extra props that we are not expecting to receive in the incoming requests in the body
+    }),
+  );
+  await app.listen(process.env.PORT ?? 3001);
 }
 bootstrap();
