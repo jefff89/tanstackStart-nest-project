@@ -9,7 +9,7 @@ import { TanStackDevtools } from '@tanstack/react-devtools'
 
 import { ChartColumnBigIcon } from 'lucide-react'
 import appCss from '../styles.css?url'
-import { getSingedInUserId } from '@/data/getSignedInUserId'
+import { getSingedInUserId } from '@/src/data/getSignedInUserId'
 
 export const Route = createRootRoute({
   notFoundComponent() {

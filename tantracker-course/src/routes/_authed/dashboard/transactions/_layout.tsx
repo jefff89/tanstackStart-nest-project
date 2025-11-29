@@ -6,7 +6,7 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb'
+} from '@/src/components/ui/breadcrumb'
 
 export const Route = createFileRoute('/_authed/dashboard/transactions/_layout')(
   {
