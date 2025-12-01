@@ -10,16 +10,15 @@ export class TransactionsService {
     @InjectRepository(Transaction) private repo: Repository<Transaction>,
   ) {}
 
-  async create(createTransactionDto: CreateTransactionDto) {
+  create(createTransactionDto: CreateTransactionDto) {
     // Destructure only the relation fields to map properly
-    const { userId, categoryId, ...rest } = createTransactionDto;
+    // const { userId, categoryId, ...rest } = createTransactionDto;
 
-    const transaction = this.repo.create({
-      ...rest, // description, amount, transactionDate
-      userId,
-      categoryId,
-    });
+    const transaction = this.repo.create(createTransactionDto);
 
     return this.repo.save(transaction);
+  }
+  findAll() {
+    return this.repo.find({ relations: ['category', 'user'] });
   }
 }

@@ -4,29 +4,16 @@ content-type: application/json
 
 {
     "userId": "2",
-    "description": "expense",
-    "amount": 1000,
-    "transactionDate": "2025-11-22T06:36:57",
+    "description": "income",
+    "amount": 99,
+    "transactionDate": "2024-11-22T06:36:57",
     "categoryId": "2"
 }
 
-### Find a user with id
-GET  http://localhost:3001/auth/2
 
 
-### Find all categories
-GET  http://localhost:3001/categories
+
+### Find all transactions
+GET  http://localhost:3001/transactions
 
 
-### Delete a user with id
-DELETE   http://localhost:3001/auth/1
-
-
-### update a user with id
-PATCH  http://localhost:3001/auth/2
-content-type: application/json
-
-{
-    "email": "jeff@test.com",
-    "password": "test"
-}

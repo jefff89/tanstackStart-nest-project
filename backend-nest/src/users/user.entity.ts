@@ -6,7 +6,8 @@ import {
   AfterUpdate,
   AfterRemove,
 } from 'typeorm';
-
+import { Transaction } from 'src/transactions/transaction.entity';
+import { OneToMany } from 'typeorm';
 @Entity()
 export class User {
   @PrimaryGeneratedColumn()
@@ -17,6 +18,9 @@ export class User {
 
   @Column()
   password: string;
+
+  @OneToMany(() => Transaction, (transaction) => transaction.category)
+  transactions: Transaction[]; // One to Many relation with transaction
 
   @AfterInsert()
   logInsert() {

@@ -6,6 +6,7 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { Category } from 'src/categories/category.entity';
+import { User } from 'src/users/user.entity';
 
 @Entity()
 export class Transaction {
@@ -14,6 +15,13 @@ export class Transaction {
 
   @Column()
   userId: string;
+
+  @ManyToOne(() => User, (user) => user.transactions, {
+    nullable: false,
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn({ name: 'userId' })
+  user: User;
 
   @Column()
   description: string;
