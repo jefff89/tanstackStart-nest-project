@@ -6,9 +6,10 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { Category } from 'src/categories/category.entity';
+
 @Entity()
 export class Transaction {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column()
@@ -17,16 +18,20 @@ export class Transaction {
   @Column()
   description: string;
 
-  @Column()
+  @Column('float')
   amount: number;
 
   @Column()
   transactionDate: Date;
 
+  // Foreign key column
+  @Column()
+  categoryId: string;
+
   @ManyToOne(() => Category, (category) => category.transactions, {
-    nullable: false, // make FK NOT NULL if you want it required
-    onDelete: 'CASCADE', // optional: what happens when category is deleted
+    nullable: false,
+    onDelete: 'CASCADE',
   })
-  @JoinColumn({ name: 'categoryId' }) // this creates `categoryId` FK column
+  @JoinColumn({ name: 'categoryId' })
   category: Category;
 }
