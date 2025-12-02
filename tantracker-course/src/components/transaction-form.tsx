@@ -44,7 +44,11 @@ const transactionFormSchema = z.object({
 
 type TransactionFormValues = z.infer<typeof transactionFormSchema>
 
-export function TransactionForm() {
+export function TransactionForm({
+  categories,
+}: {
+  categories: Array<{ id: number; name: string; type: 'expense' | 'income' }>
+}) {
   const form = useForm<TransactionFormValues>({
     defaultValues: {
       transactionType: 'income',
@@ -59,6 +63,12 @@ export function TransactionForm() {
   const handleSubmit = (data: TransactionFormValues) => {
     console.log(data)
   }
+  // Recompute when the transaction type changes. Using `watch` ensures the
+  // component re-renders when the form value updates (getValues() does not).
+  const transactionType = form.watch('transactionType')
+  const filteredCategories = categories.filter(
+    (category) => category.type === transactionType,
+  )
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(handleSubmit)}>
@@ -102,9 +112,18 @@ export function TransactionForm() {
                       onValueChange={field.onChange}
                     >
                       <SelectTrigger>
-                        <SelectValue placeholder="Category" />
+                        <SelectValue />
                       </SelectTrigger>
-                      <SelectContent></SelectContent>
+                      <SelectContent>
+                        {filteredCategories.map((category) => (
+                          <SelectItem
+                            key={category.id}
+                            value={category.id.toString()}
+                          >
+                            {category.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
                     </Select>
                   </FormControl>
                   <FormMessage />
