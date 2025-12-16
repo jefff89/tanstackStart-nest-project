@@ -1,10 +1,10 @@
 import { createServerFn } from '@tanstack/react-start'
 
-export const getSingedInUserId = createServerFn({
+export const getSignedInUserId = createServerFn({
   method: 'GET',
 }).handler(async () => {
   const user = await fetch('http://localhost:3001/auth/2').then((res) =>
     res.json(),
   )
-  return user?.id
+  return { userId: user?.id }
 })

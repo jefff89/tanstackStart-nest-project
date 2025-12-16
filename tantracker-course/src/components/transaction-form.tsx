@@ -2,7 +2,7 @@ import { CalendarIcon } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { format } from 'date-fns'
+import { addDays, format } from 'date-fns'
 import {
   Form,
   FormControl,
@@ -27,13 +27,13 @@ import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
 import { Input } from '@/components/ui/input'
 
-const transactionFormSchema = z.object({
+export const transactionFormSchema = z.object({
   transactionType: z.enum(['income', 'expense']),
   //   categoryId: z.coerce.number().positive('Please select a category'),
   categoryId: z.string(),
   transactionDate: z
     .date()
-    .max(new Date(), 'Transaction date cannot be in the future'),
+    .max(addDays(new Date(), 1), 'Transaction date cannot be in the future'),
   //   amount: z.coerce.number().positive('Amount must be greater than 0'),
   amount: z.string(),
   description: z
@@ -46,8 +46,10 @@ type TransactionFormValues = z.infer<typeof transactionFormSchema>
 
 export function TransactionForm({
   categories,
+  onSubmit,
 }: {
   categories: Array<{ id: number; name: string; type: 'expense' | 'income' }>
+  onSubmit: (data: z.infer<typeof transactionFormSchema>) => Promise<void>
 }) {
   const form = useForm<TransactionFormValues>({
     defaultValues: {
@@ -60,9 +62,6 @@ export function TransactionForm({
     resolver: zodResolver(transactionFormSchema),
   })
 
-  const handleSubmit = (data: TransactionFormValues) => {
-    console.log(data)
-  }
   // Recompute when the transaction type changes. Using `watch` ensures the
   // component re-renders when the form value updates (getValues() does not).
   const transactionType = form.watch('transactionType')
@@ -71,7 +70,7 @@ export function TransactionForm({
   )
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmit)}>
+      <form onSubmit={form.handleSubmit(onSubmit)}>
         <fieldset
           className="grid gird-cols-2 gap-y-2 gap-x-2"
           disabled={form.formState.isSubmitting}
@@ -147,11 +146,7 @@ export function TransactionForm({
                           className="data-[empty=true]:text-muted-foreground w-full justify-start text-left font-normal"
                         >
                           <CalendarIcon />
-                          {field.value ? (
-                            format(field.value, 'PPP')
-                          ) : (
-                            <span>Pick a date</span>
-                          )}
+                          {format(field.value, 'PPP')}
                         </Button>
                       </PopoverTrigger>
                       <PopoverContent className="w-auto p-0">

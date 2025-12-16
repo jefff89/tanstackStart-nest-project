@@ -9,7 +9,7 @@ import { TanStackDevtools } from '@tanstack/react-devtools'
 
 import { ChartColumnBigIcon } from 'lucide-react'
 import appCss from '../styles.css?url'
-import { getSingedInUserId } from '@/src/data/getSignedInUserId'
+import { getSignedInUserId } from '@/data/getSignedInUserId'
 
 export const Route = createRootRoute({
   notFoundComponent() {
@@ -18,7 +18,7 @@ export const Route = createRootRoute({
     )
   },
   beforeLoad: async () => {
-    const userId = await getSingedInUserId()
+    const userId = await getSignedInUserId()
     return {
       userId,
     }
